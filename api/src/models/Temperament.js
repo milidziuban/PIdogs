@@ -7,12 +7,12 @@ module.exports = (sequelize) => {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4, 
-        allowNull: false,
+        allowNull: true,
         primaryKey:true,
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
   });
 };

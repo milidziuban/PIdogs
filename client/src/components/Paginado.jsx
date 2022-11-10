@@ -1,0 +1,1 @@
+// [ ] Paginado para ir buscando y mostrando las siguientes razas, mostrando 8 razas por página.

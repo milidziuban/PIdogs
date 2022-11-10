@@ -1,13 +1,13 @@
 const { Router } = require('express');
-const { Dog } = require('../db')
+const { Dog, Temperament } = require('../db')
+const { conn } = require('../db')
 const router = Router();
 const axios = require('axios')
-
-// const router = Router();
+const { Op } = require('sequelize')
 
 // [ ] GET /dogs:
 // Obtener un listado de las razas de perro
-// Debe devolver solo los datos necesarios para la ruta principal
+// Debe devolver solo los datos necesarios para la ruta principal (ocho perros)
 
 router.get('/', (req, res) => {
     const { skip = 0, limit = 8 } = req.query;
@@ -20,7 +20,6 @@ router.get('/', (req, res) => {
                     name: dog.name,
                     temperament: dog.temperament,
                     weight: dog.weight.metric,
-                    life_span: dog.life_span,
                 }
             })
         })
@@ -34,7 +33,6 @@ router.get('/', (req, res) => {
                             name: dog.name,
                             temperament: dog.temperament,
                             weight: dog.weight,
-                            life_span: dog.life_span,
                         }
                     }).concat(respApi).slice(skip, limit)
                     res.send(response)
@@ -55,26 +53,88 @@ router.get('/search', async (req, res) => {
         const { name } = req.query
         const dogApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${process.env.APIKEY_DOGS}`)
         const allDogs = dogApi.data.filter(dog => dog.name.toLowerCase().includes(name.toLowerCase()))
-        return res.send(allDogs)
+
+        const response = allDogs.map(dog => {
+            return {
+                id: dog.id,
+                image: dog.image.url,
+                name: dog.name,
+                temperament: dog.temperament,
+                weight: dog.weight.metric,
+            }
+        })
+
+        const perro = await Dog.findAll({
+            attributes: ['id', 'name', 'image', 'weight',],
+            where: {
+                name: {
+                    [Op.iLike]: `%${name}%`
+                }
+            },
+            include: {
+                model: Temperament,
+                attributes: ['name'],
+                through: {
+                    attributes: []
+                }
+            }
+        })
+        const doggy = perro.concat(response)
+
+        if (doggy.length < 1) throw `No hubo coicidencias con el nombre de raza: ${name} `
+
+        res.send(doggy)
+
     } catch (error) {
-        console.log(error)
+        res.send(error).status(400)
     }
 })
-
-
 
 // [ ] GET /dogs/{idRaza}:
 // Obtener el detalle de una raza de perro en particular
 // Debe traer solo los datos pedidos en la ruta de detalle de raza de perro
 // Incluir los temperamentos asociados
+// TRAER: life_span: dog.life_span, height: dog.height , weight: dog.weight,
+
 router.get('/:idRaza', async (req, res) => {
     try {
         const { idRaza } = req.params
-        const dogApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${process.env.APIKEY_DOGS}`)
-        const detalleDog = dogApi.data.find(dog => dog.id == idRaza)
-        return res.send(detalleDog)
+        const regex = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+        
+        if (regex.test(idRaza)) {
+            const dogId = await Dog.findOne({
+                attributes: ['id', 'name', 'life_span', 'image', 'height', 'weight',],
+                where: {
+                    id: [idRaza]
+                },
+                include: {
+                    model: Temperament,
+                    attributes: ['name'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            })
+            res.send(dogId)
+        } else {
+            const dogApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${process.env.APIKEY_DOGS}`);
+            const detalleDog = dogApi.data.filter(dog => dog.id == idRaza)
+    
+            const response = detalleDog.map(dog => {
+                return {
+                    name: dog.name,
+                    life_span: dog.life_span,
+                    height: dog.height,
+                    weight: dog.weight,
+                    temperament: dog.temperament
+                }
+            })
+            res.send(response)
+        }
+
+
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 
 })
@@ -84,18 +144,27 @@ router.get('/:idRaza', async (req, res) => {
 // Recibe los datos recolectados desde el formulario controlado de la ruta de creación de raza de perro por body
 // Crea una raza de perro en la base de datos relacionada con sus temperamentos
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        const { id, name, height, weight, life_span, image, temperament } = req.body;
-        Dog.create({
-            id,
+        const { name, height, weight, life_span, image, temperament } = req.body;
+        const newDog = {
             name,
             height,
             weight,
             life_span,
             image,
-            temperament
-        })
+        }
+        const createdDog = await Dog.create(newDog);
+
+        for (const temp of temperament) {
+            const tempById = await Temperament.findOne({
+                where: { id: temp }
+            })
+            console.log(tempById)
+            if (!tempById) throw `El temperament con id = ${temp} no existe`
+            await createdDog.addTemperament(tempById.id);
+        }
+
         res.send("Dog created")
     } catch (error) {
         console.log(error)
