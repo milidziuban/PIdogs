@@ -2,16 +2,31 @@ button {
     cursor: pointer;
 
     position: relative;
-  
-    width: 25%;
-    height: 48px;
-
+    display: inline-block;
     border: none;
-    background: #AD6A96;
+
+    background: #732B2B;
+    color: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 4px;
+}
 
-    color: #FFFFFF;
+.button_home {
+    padding: 0.5rem 0;
+    margin: 0.5rem 1rem;
+
+    width: 278px;
+    height: 48px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.button_home:hover {
+    color: #732B2B;
+    background: #ffffff;
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
@@ -19,6 +34,33 @@ button {
 }
 
 .style_landing {
-background-color: rgb(229, 160, 160);
+    color: #ffffff;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(https://img2.rtve.es/i/?w=1600&i=1628145117416.jpg);
+    background-size: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 650px;
 }
 
+.titulo_landing {
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    line-height: 3;
+}
+
+.descrip_landing {
+    margin-block-end: 200px; 
+}
+
+.parrafo_landing {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    
+    line-height: 21px;
+    align-items: center;
+    margin-block-end: 100px; 
+    padding-inline: 180px;
+
+}

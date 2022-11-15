@@ -1,0 +1,16 @@
+.home {
+    justify-content:space-between;
+}
+
+.contenido_home {
+    display: grid;
+    grid-template-columns: repeat(3,0fr);
+    justify-content: space-evenly;
+}
+
+.cards {
+    justify-content: center;
+    padding: 10px;
+    width: 350px;
+
+}

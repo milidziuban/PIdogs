@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import './Card.css'
 
 // Ruta de detalle de raza de perro: debe contener
@@ -14,7 +13,7 @@ export default function Card ({name, temperament, image}){
         <div className="card">
            <h3> {name} </h3>
            <h3> {temperament} </h3>
-           <img src={image} alt='image not found' width="160"></img>
+           <img src={image} alt='img not found' width="160"></img>
         </div>
     )
 }
