@@ -3,14 +3,15 @@ const { Dog, Temperament } = require('../db')
 const { conn } = require('../db')
 const router = Router();
 const axios = require('axios')
-const { Op } = require('sequelize')
+const { Op } = require('sequelize');
+const { raw } = require('body-parser');
 
 // [ ] GET /dogs:
 // Obtener un listado de las razas de perro
 // Debe devolver solo los datos necesarios para la ruta principal (ocho perros)
 
 router.get('/', (req, res) => {
-    const { skip = 0, limit = 8 } = req.query;
+    //const { skip = 0, limit = 8 } = req.query;
     axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${process.env.APIKEY_DOGS}`)
         .then(respuesta => {
             return respuesta.data.map(dog => {
@@ -23,18 +24,32 @@ router.get('/', (req, res) => {
                 }
             })
         })
+
         .then(respApi => {
-            Dog.findAll()
+            Dog.findAll({
+                include: {
+                    model: Temperament,
+                    attributes: ['name'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            })
                 .then(dogs => {
                     const response = dogs.map(dog => {
+                        const temp = dog.temperaments.map(el => {
+                            return el.name
+                        }).join(', ');
+                        console.log(temp);
                         return {
                             id: dog.id,
                             image: dog.image,
                             name: dog.name,
-                            temperament: dog.temperament,
+                            temperament: temp,
                             weight: dog.weight,
                         }
-                    }).concat(respApi).slice(skip, limit)
+                    }).concat(respApi)
+                    //.slice(skip, limit)
                     res.send(response)
                 })
         })
@@ -79,7 +94,7 @@ router.get('/search', async (req, res) => {
                 }
             }
         })
-        const doggy = perro.concat(response)
+        const doggy = perro.map().concat(response)
 
         if (doggy.length < 1) throw `No hubo coicidencias con el nombre de raza: ${name} `
 
@@ -100,32 +115,43 @@ router.get('/:idRaza', async (req, res) => {
     try {
         const { idRaza } = req.params
         const regex = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
-        
+
         if (regex.test(idRaza)) {
             const dogId = await Dog.findOne({
                 attributes: ['id', 'name', 'life_span', 'image', 'height', 'weight',],
                 where: {
                     id: [idRaza]
                 },
+            
                 include: {
                     model: Temperament,
                     attributes: ['name'],
                     through: {
                         attributes: []
-                    }
-                }
+                    },
+                },
             })
-            res.send(dogId)
+                // .then((dogId) => {
+                //     dogId.temperaments = dogId.temperaments.map(el => {
+                //         return el.name
+                //     }).join(', ')
+                //     console.log(dogId);
+                //     res.send(dogId)
+
+                // })
+
+                res.send(dogId)
+
         } else {
             const dogApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${process.env.APIKEY_DOGS}`);
             const detalleDog = dogApi.data.filter(dog => dog.id == idRaza)
-    
+
             const response = detalleDog.map(dog => {
                 return {
                     name: dog.name,
                     life_span: dog.life_span,
-                    height: dog.height,
-                    weight: dog.weight,
+                    height: dog.height.metric,
+                    weight: dog.weight.metric,
                     temperament: dog.temperament
                 }
             })
@@ -160,7 +186,6 @@ router.post('/', async (req, res) => {
             const tempById = await Temperament.findOne({
                 where: { id: temp }
             })
-            console.log(tempById)
             if (!tempById) throw `El temperament con id = ${temp} no existe`
             await createdDog.addTemperament(tempById.id);
         }
