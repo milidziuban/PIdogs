@@ -1,4 +1,4 @@
-import { GET_DOG, FILTER_DOG, GET_TEMPERAMENT, ORDER_DOG, SEARCH_DOG } from "../actions"
+import { GET_DOG, FILTER_DOG, GET_TEMPERAMENT, ORDER_DOG, WEIGHT_DOG, SEARCH_DOG, POST_DOG, GET_BY_ID } from "../actions"
 
 const initialState = {
     dogs: [],
@@ -71,17 +71,55 @@ export default function reducer(state = initialState, action) {
                 dogs: sortedName,
             };
 
+        case WEIGHT_DOG:
+
+            const dogweight = action.payload === 'max' ? state.dogs.sort((a, b) => {
+
+
+                if ((a.weight) > (b.weight)) {
+                    return 1;
+                }
+                if ((b.weight) > (a.weight)) {
+                    return -1;
+                }
+                return 0;
+
+            })
+                : state.allDogs.sort((a, b) => {
+                    if ((a.weight) > (b.weight)) {
+                        return -1;
+                    }
+                    if ((b.weight) > (a.weight)) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
+            return {
+                ...state,
+                dogs: dogweight,
+            };
+
         case SEARCH_DOG:
             return {
                 ...state,
                 dogs: action.payload.data
             };
 
-        // case GET_BY_ID:
-        //     return {
-        //         ...state,
-        //         dogs: action.payload.data
-        //     };
+        case POST_DOG:
+            return {
+                ...state,
+            };
+
+        case GET_BY_ID:
+            let details = action.payload.data
+            if(!details[0].temperament[0]){
+                details[0].temperament[0] = 'no temperaments'
+            }
+            return {
+                ...state,
+                detailsDogs: details
+            };
 
         default:
             return state;

@@ -1,5 +1,5 @@
 import React from "react";
-//import './Paginado.css'
+import './Paginado.css'
 // [ ] Paginado para ir buscando y mostrando las siguientes razas, mostrando 8 razas por página.
 
 export default function Paginado({ dogPerPage, allDogs, paginado }) {
@@ -14,7 +14,7 @@ export default function Paginado({ dogPerPage, allDogs, paginado }) {
       <ul className="paginado">
         {pageNumber && pageNumber.map(number => (
           <a className='lista' onClick={() => paginado(number)} key={number}>
-            <button type="botonpaginado">{number}</button>
+            <button className="botonpaginado">{number}</button>
           </a>
         ))}
       </ul>

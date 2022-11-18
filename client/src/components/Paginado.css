@@ -1,17 +1,21 @@
 .paginado{
-    float: left;
-    padding: 0 0 5rem 0.5rem;
-    margin: 0.2rem;
+    padding-right: 201px;
+    padding-left: 222px;
+    margin: 34px;
     text-align: center; 
 } 
 
-.botonpaginado {
-    width: 2.1rem;
-    padding: 0.5rem 0;
-    margin: 0.5rem 1rem;
+.lista {
+    margin: 0.3%;
+    padding: 0.2%;
 }
 
-.botonpaginado:hover {
+.botonpaginado {
+    width: 66px;
+    height: 20px;
+}
+
+.botonpaginado:hover{
     color: #732B2B;
     background: #ffffff;
 }

@@ -1,4 +1,29 @@
 .navBar {
     background-color: #732B2B;
     color: white;
+    padding: 30px;
+    display: flex;
+    align-items: center;
 }
+
+.navBar h3{
+    margin: auto;
+}
+
+.navBar h2 {
+    margin: auto;
+}
+
+.temperament{
+    width:230px;
+    display: inline;
+}
+
+
+.create_link {
+    width:200px;
+    font-size:large;
+    text-decoration: none;
+    color: white
+}
+

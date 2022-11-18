@@ -1,0 +1,33 @@
+.search {
+    width:300px;
+    padding-top: 1%;
+    display: flex;
+    align-items: center;
+}
+
+.search_top {
+    display: inline;
+}
+
+.input_search {
+    width: auto;
+    height: 22px;
+}
+
+.button_search {
+
+    width: 65px;
+    height: 26px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+
+    color: #732B2B;
+    background: #ffffff;
+}
+
+.button_search:hover {
+    background-color: #732B2B;
+    color: #ffffff;
+}

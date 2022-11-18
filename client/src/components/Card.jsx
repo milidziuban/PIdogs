@@ -9,12 +9,16 @@ import './Card.css'
 // [ ] Años de vida
 
 export default function Card ({name, temperament, image}){
+    const imagedefault = 'https://i.pinimg.com/originals/27/d6/33/27d6332add97c24febd69753b55b7f10.png'
     return (
         <div className="card">
-           <h3> {name} </h3>
-           <h3> {temperament} </h3>
-           <img src={image} alt='img not found' width="160"></img>
+           <h2 className="nombres"> {name} </h2>
+           <h3 className="temperamentostitulo"> Temperaments: </h3>
+           <h3 className="temperamentos"> {temperament} </h3>
+           <img className="cardimagen" src={image? image : imagedefault } alt='img not found' width="175"></img>
         </div>
     )
 }
+
+//si no existe poner otra img
 
