@@ -5,10 +5,18 @@ import { useEffect, useState } from "react";
 import { getTemperament, postDog } from '../store/actions'
 import './Create.css';
 
-function validator (input) {
+function validator(input) {
     let errors = {};
-    if(!input.name) {
-        errors.name = 'Name is required'
+    if (!input.name) {
+        errors.name = 'Name is required*'
+    }
+
+    if (!input.height) {
+        errors.height = 'Height is required*'
+    }
+
+    if (!input.weight) {
+        errors.weight = 'Weight is required*'
     }
 
     return errors;
@@ -18,10 +26,10 @@ export default function CreaDog() {
 
     const dispatch = useDispatch();
     const history = useHistory();
+
     const allTemperaments = useSelector((state) => state.temperaments);
 
     const [temp, setTemp] = useState([])
-
     const [button, setButton] = useState(true);
     const [errors, setErrors] = useState({})
 
@@ -38,8 +46,8 @@ export default function CreaDog() {
         dispatch(getTemperament())
     }, [dispatch])
 
-    useEffect(()=>{
-        if (input.name.length > 0 && input.height.length > 0  && input.weight.length > 0) setButton(false)
+    useEffect(() => {
+        if (input.name.length > 0 && input.height.length > 0 && input.weight.length > 0) setButton(false)
         else setButton(true)
     }, [input, setButton]);
 
@@ -84,14 +92,20 @@ export default function CreaDog() {
 
     return (
         <div>
-            <Link to='/home'> <button> Volver </button> </Link>
-            <h1> Create Dog </h1>
+            <div className="top">
+                <Link to='/home'> <button className="button_back"> Back </button> </Link>
+                <h1 className="crear"> Create Dog </h1>
+            </div>
+            <div className="img_form">
+            <div className="img">
+                <img src="https://www.pngmart.com/files/1/Dog-PNG-Image.png" width='400px'></img>
+            </div>
             <form onSubmit={handleSubmit}>
                 <div className='form'>
 
-                    <label> Nombre: </label>
+                    <label> Name: </label>
                     <input type='text' value={input.name} name='name' onChange={handleChange} />
-                    {errors.name && 
+                    {errors.name &&
                         <p className="error"> {errors.name} </p>
                     }
 
@@ -100,50 +114,44 @@ export default function CreaDog() {
 
                     <label> Height: </label>
                     <input type='text' value={input.height} name='height' onChange={handleChange} />
+                    {errors.height &&
+                        <p className="error"> {errors.height} </p>
+                    }
 
                     <label> Weight: </label>
                     <input type='text' value={input.weight} name='weight' onChange={handleChange} />
+                    {errors.weight &&
+                        <p className="error"> {errors.weight} </p>
+                    }
 
                     <label> Image: </label>
                     <input type='text' value={input.image} name='image' placeholder="Image URL..." onChange={handleChange} />
 
-                    <div className={""}>
-                        <h3>Select Temperaments</h3>
-                    </div>
 
-                    <select onChange={(e) => handleSelect(e)}>
-                        <option disabled selected defaultValue>Seleccionar temperamento</option>
+                    <label> Temperaments: </label>
+
+                    <select className="select_create" onChange={(e) => handleSelect(e)}>
+                        <option disabled selected defaultValue>Select Temperaments</option>
                         {allTemperaments?.map((temp) => (
                             <option id={temp.name} value={temp.id}> {temp.name} </option>
                         ))}
 
                     </select>
 
-                    {input.temperament.map((el) => 
-                        <div> 
+                    {input.temperament.map((el) =>
+                        <div>
                             <p> {el} </p>
                         </div>
                     )}
 
                     <ul className="seleccion">{temp.map((t) => t + ' ,')}</ul>
 
-                    <button  disabled={button} input='input' className='bottoncrear' type="submit"> Create Dog </button>
+                    <button disabled={button} input='input' className='bottoncrear' type="submit"> Create Dog </button>
 
                 </div>
             </form>
+            </div>
         </div>
     )
 
 }
-// Agregar nuevos perros
-
-// Ruta de creación de raza de perro: debe contener
-
-// [ ] Un formulario controlado con JavaScript con los siguientes campos:
-// Nombre
-// Altura (Diferenciar entre altura mínima y máxima)
-// Peso (Diferenciar entre peso mínimo y máximo)
-// Años de vida
-// [ ] Posibilidad de seleccionar/agregar uno o más temperamentos
-// [ ] Botón/Opción para crear una nueva raza de perro
-// Es requisito que el formulario de creación esté validado con JavaScript y no sólo con validaciones HTML. Pueden agregar las validaciones que consideren. Por ejemplo: Que el nombre de la raza no pueda contener números o símbolos, que el peso/altura mínimo no pueda ser mayor al máximo y viceversa, etc.

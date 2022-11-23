@@ -7,12 +7,8 @@ import Card from "./Card";
 import Paginado from "./Paginado";
 import './Home.css'
 
-// [ ] Input de búsqueda para encontrar razas de perros por: nombre
-// [ ] Botones/Opciones para ordenar las razas de perro por: Peso
-
 export default function Home() {
     const allDogs = useSelector((state) => state.dogs);
-    const allTemperaments = useSelector((state) => state.temperaments);
 
     const dispatch = useDispatch();
 
@@ -51,15 +47,13 @@ export default function Home() {
 
             <div className="home_top">
 
-                <h3> Order </h3>
-
                 <select className='order_select' onChange={handleOrderByName}>
                     <option disabled selected defaultValue> Alphabetical order </option>
                     <option value="A-Z">A-Z</option>
                     <option value="Z-A">Z-A</option>
                 </select>
 
-                <select onChange={handleOrderByWeight}>
+                <select className='order_select' onChange={handleOrderByWeight}>
                     <option disabled selected defaultValue> Filter by weight </option>
                     <option value="max">Max</option>
                     <option value="min">Min</option>
@@ -78,7 +72,7 @@ export default function Home() {
                     return (
                         <div className="cards">
                             <Link to={'/home/' + el.id}>
-                                <Card name={el.name} temperament={el.temperament} image={el.image} />
+                                <Card name={el.name} weight={el.weight} temperament={el.temperament} image={el.image} />
                             </Link>
                         </div>
                     )

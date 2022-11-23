@@ -1,16 +1,22 @@
 .home {
     justify-content: space-between;
+    background-image: linear-gradient(0deg, rgb(0 0 0 / 75%), #f1f1f1), url(https://img.freepik.com/vector-premium/huella-gato-perro-cachorro-mascota-rastro_177006-39.jpg?w=2000);
+    height: 221vh;
 }
 
 .home_top {
     display: inline-flex;
     align-items: center;
+    width: 423px;
+    justify-content: space-evenly;
+    margin: 20px;
 }
 
 .contenido_home {
     display: grid;
     grid-template-columns: repeat(3, 0fr);
     justify-content: space-evenly;
+    margin: 35px;
 }
 
 .cards {
@@ -28,4 +34,9 @@ a:link {
 .order_select {
     margin: 1%;
     padding: 0.1%;
+
+    border-color: brown;
+    border-radius: 4px;
+
+    height: 25px
 }

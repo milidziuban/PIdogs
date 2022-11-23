@@ -1,12 +1,36 @@
 .form {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
 
-    height: 450px;
+    height: 520px;
+    width: 500px;
+    margin-inline: 90px;
 
     background-color: #F1F1F1;
+    border-radius: 8px;
+}
+
+.button_back {
+    margin-top: 1%;
+
+    width: 90px;
+    height: 28px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+
+
+    border-radius: 0%;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.button_back:hover {
+    color: #732B2B;
+    background: #ffffff;
 }
 
 .bottoncrear {
@@ -14,6 +38,7 @@
     height: 28px;
 
     margin-top: 2%;
+    margin-bottom: 2%;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -30,9 +55,47 @@
     background-color: #732B2B;
 }
 
+.top {
+    align-items: center;
+    align-items: center;
+    display: flex;
+}
+
+.crear {
+    margin-left: 505px;
+}
+
+.img {
+    display: flex;
+
+}
+
+.img_form {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
+
 input {
     margin: 0.5%;
     border-radius: 3px;
     border: 0.2px;
     border-style: solid;
+    height: 15px
+}
+
+select {
+    width: 175px;
+    height: 22px
+}
+
+.error{
+    display: contents;
+    font-size: small;
+    color: red;
+}
+
+.errorname {
+    display: flex;
 }

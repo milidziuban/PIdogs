@@ -49,19 +49,19 @@ export default function reducer(state = initialState, action) {
         case ORDER_DOG:
 
             const sortedName = action.payload === "A-Z" ? state.dogs.sort((a, b) => {
-                if (a.name > b.name) {
-                    return 1;
+                if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                    return 1;                                                      //cambio de indices
                 }
-                if (b.name > a.name) {
+                if (b.name.toLowerCase() > a.name.toLowerCase()) {
                     return -1;
                 }
                 return 0;
             })
                 : state.dogs.sort((a, b) => {
-                    if (a.name > b.name) {
+                    if (a.name.toLowerCase() > b.name.toLowerCase()) {
                         return -1;
                     }
-                    if (b.name > a.name) {
+                    if (b.name.toLowerCase() > a.name.toLowerCase()) {
                         return 1;
                     }
                     return 0;
@@ -71,13 +71,14 @@ export default function reducer(state = initialState, action) {
                 dogs: sortedName,
             };
 
+
         case WEIGHT_DOG:
 
-            const dogweight = action.payload === 'max' ? state.dogs.sort((a, b) => {
+            const dogweight = action.payload === 'min' ? state.dogs.sort((a, b) => {
 
 
                 if ((a.weight) > (b.weight)) {
-                    return 1;
+                    return 1;                      
                 }
                 if ((b.weight) > (a.weight)) {
                     return -1;
@@ -85,7 +86,7 @@ export default function reducer(state = initialState, action) {
                 return 0;
 
             })
-                : state.allDogs.sort((a, b) => {
+                : state.dogs.sort((a, b) => {
                     if ((a.weight) > (b.weight)) {
                         return -1;
                     }
@@ -112,13 +113,9 @@ export default function reducer(state = initialState, action) {
             };
 
         case GET_BY_ID:
-            let details = action.payload.data
-            if(!details[0].temperament[0]){
-                details[0].temperament[0] = 'no temperaments'
-            }
             return {
                 ...state,
-                detailsDogs: details
+                detailsDogs: action.payload.data
             };
 
         default:
