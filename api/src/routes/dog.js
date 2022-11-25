@@ -1,10 +1,9 @@
-const { Router } = require('express');
+const { Router, query } = require('express');
 const { Dog, Temperament } = require('../db')
 const { conn } = require('../db')
 const router = Router();
 const axios = require('axios')
 const { Op } = require('sequelize');
-const { raw } = require('body-parser');
 
 // [ ] GET /dogs:
 // Obtener un listado de las razas de perro
@@ -15,12 +14,24 @@ router.get('/', (req, res) => {
     axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${process.env.APIKEY_DOGS}`)
         .then(respuesta => {
             return respuesta.data.map(dog => {
+                const peso = dog.weight.metric.split(' - ').map((e) => Number(e))
+                let total = 0;
+                for (let i = 0; i < peso.length; i++) {
+                    total = total + peso[i]
+                }
+                let promedio = total / peso.length
+
+                console.log(promedio, typeof promedio);
+                if (isNaN(promedio)) {
+                    promedio = 8
+                }
+
                 return {
                     id: dog.id,
                     image: dog.image.url,
                     name: dog.name,
                     temperament: dog.temperament,
-                    weight: dog.weight.metric,
+                    weight: promedio,
                 }
             })
         })
@@ -91,10 +102,24 @@ router.get('/search', async (req, res) => {
                 attributes: ['name'],
                 through: {
                     attributes: []
-                }
+                },
             }
         })
-        const doggy = perro.map().concat(response)
+
+        const perrobd = perro.map(dog => {
+            const temp = dog.temperaments.map(el => {
+                return el.name
+            }).join(', ');
+            return {
+                id: dog.id,
+                image: dog.image,
+                name: dog.name,
+                temperament: temp,
+                weight: dog.weight,
+            }
+        })
+
+        const doggy = perrobd.concat(response)
 
         if (doggy.length < 1) throw `No hubo coicidencias con el nombre de raza: ${name} `
 
@@ -122,7 +147,7 @@ router.get('/:idRaza', async (req, res) => {
                 where: {
                     id: [idRaza]
                 },
-            
+
                 include: {
                     model: Temperament,
                     attributes: ['name'],
@@ -131,17 +156,18 @@ router.get('/:idRaza', async (req, res) => {
                     },
                 },
             })
-                // .then((dogId) => {
-                //     dogId.temperaments = dogId.temperaments.map(el => {
-                //         return el.name
-                //     }).join(', ')
-                //     console.log(dogId);
-                //     res.send(dogId)
 
-                // })
+            const dataDog = {
+                id: dogId.id,
+                name: dogId.name,
+                life_span: dogId.life_span,
+                image: dogId.image,
+                height: dogId.height,
+                weight: dogId.weight,
+                temperament: dogId.temperaments.map(el => { return el.name }).join(', '),
+            }
 
-                res.send(dogId)
-
+            res.send([dataDog])
         } else {
             const dogApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${process.env.APIKEY_DOGS}`);
             const detalleDog = dogApi.data.filter(dog => dog.id == idRaza)
@@ -152,7 +178,8 @@ router.get('/:idRaza', async (req, res) => {
                     life_span: dog.life_span,
                     height: dog.height.metric,
                     weight: dog.weight.metric,
-                    temperament: dog.temperament
+                    temperament: dog.temperament,
+                    image: dog.image.url
                 }
             })
             res.send(response)
@@ -195,6 +222,5 @@ router.post('/', async (req, res) => {
         console.log(error)
     }
 })
-
 
 module.exports = router;
