@@ -18,6 +18,9 @@ function validator(input) {
     if (!input.weight) {
         errors.weight = 'Weight is required*'
     }
+    if (isNaN(input.life_span)) {
+        errors.life_span = 'Type only numbers*'
+    }
 
     return errors;
 }
@@ -29,8 +32,9 @@ export default function CreaDog() {
 
     const allTemperaments = useSelector((state) => state.temperaments);
 
-    const [temp, setTemp] = useState([])
-    const [button, setButton] = useState(true);
+    // const [temp, setTemp] = useState([])
+    const [temp, setTemp] = useState(new Set())
+    const [button, setButton] = useState(false);
     const [errors, setErrors] = useState({})
 
     const [input, setInput] = useState({
@@ -46,10 +50,10 @@ export default function CreaDog() {
         dispatch(getTemperament())
     }, [dispatch])
 
-    useEffect(() => {
-        if (input.name.length > 0 && input.height.length > 0 && input.weight.length > 0) setButton(false)
-        else setButton(true)
-    }, [input, setButton]);
+    // useEffect(() => {
+    //     if (input.name.length > 0 && input.height.length > 0 && input.weight.length > 0) setButton(false)
+    //     else setButton(true)
+    // }, [input, setButton]);
 
     const handleChange = (e) => {
         setInput({
@@ -68,26 +72,33 @@ export default function CreaDog() {
             ...input,
             temperament: [...input.temperament, e.target.value]
         });
-        setTemp([
-            ...temp,
-            [e.target.id]
-        ]);
-        console.log([e.target.id])
+        // setTemp([
+        //     ...temp, e.target[e.target.selectedIndex].id
+        // ]);
+        setTemp(temp.add(e.target[e.target.selectedIndex].id));
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(postDog(input))
-        alert('Dog creado')
-        setInput({
-            name: "",
-            height: "",
-            weight: "",
-            life_span: "",
-            image: "",
-            temperament: [],
-        })
-        history.push('/home')
+        console.log('entro al handle');
+        if (Object.keys(errors).length === 0) {
+            console.log('entro al handle 1');
+            console.log(Object.values(input))
+            // dispatch(postDog(input))
+            alert('Dog creado')
+            setInput({
+                name: "",
+                height: "",
+                weight: "",
+                life_span: "",
+                image: "",
+                temperament: [],
+            })
+            history.push('/home')
+        } else {
+            console.log('entro al handle 2');
+            alert('Wrong or missing data')
+        }
     }
 
     return (
@@ -97,59 +108,54 @@ export default function CreaDog() {
                 <h1 className="crear"> Create Dog </h1>
             </div>
             <div className="img_form">
-            <div className="img">
-                <img src="https://www.pngmart.com/files/1/Dog-PNG-Image.png" width='400px'></img>
-            </div>
-            <form onSubmit={handleSubmit}>
-                <div className='form'>
-
-                    <label> Name: </label>
-                    <input type='text' value={input.name} name='name' onChange={handleChange} />
-                    {errors.name &&
-                        <p className="error"> {errors.name} </p>
-                    }
-
-                    <label> Life Span: </label>
-                    <input type='text' value={input.life_span} name='life_span' onChange={handleChange} />
-
-                    <label> Height: </label>
-                    <input type='text' value={input.height} name='height' onChange={handleChange} />
-                    {errors.height &&
-                        <p className="error"> {errors.height} </p>
-                    }
-
-                    <label> Weight: </label>
-                    <input type='text' value={input.weight} name='weight' onChange={handleChange} />
-                    {errors.weight &&
-                        <p className="error"> {errors.weight} </p>
-                    }
-
-                    <label> Image: </label>
-                    <input type='text' value={input.image} name='image' placeholder="Image URL..." onChange={handleChange} />
-
-
-                    <label> Temperaments: </label>
-
-                    <select className="select_create" onChange={(e) => handleSelect(e)}>
-                        <option disabled selected defaultValue>Select Temperaments</option>
-                        {allTemperaments?.map((temp) => (
-                            <option id={temp.name} value={temp.id}> {temp.name} </option>
-                        ))}
-
-                    </select>
-
-                    {input.temperament.map((el) =>
-                        <div>
-                            <p> {el} </p>
-                        </div>
-                    )}
-
-                    <ul className="seleccion">{temp.map((t) => t + ' ,')}</ul>
-
-                    <button disabled={button} input='input' className='bottoncrear' type="submit"> Create Dog </button>
-
+                <div className="img">
+                    <img src="https://www.pngmart.com/files/1/Dog-PNG-Image.png" width='400px'></img>
                 </div>
-            </form>
+                <form onSubmit={handleSubmit}>
+                    <div className='form'>
+
+                        <label> Name: </label>
+                        <input type='text' value={input.name} name='name' onChange={handleChange} />
+                        {errors.name &&
+                            <p className="error"> {errors.name} </p>
+                        }
+
+                        <label> Life Span: </label>
+                        <input type='text' value={input.life_span} name='life_span' onChange={handleChange} />
+                        {errors.life_span &&
+                            <p className="error"> {errors.life_span} </p>}
+
+                        <label> Height: </label>
+                        <input type='text' value={input.height} name='height' onChange={handleChange} />
+                        {errors.height &&
+                            <p className="error"> {errors.height} </p>
+                        }
+
+                        <label> Weight: </label>
+                        <input type='text' value={input.weight} name='weight' onChange={handleChange} />
+                        {errors.weight &&
+                            <p className="error"> {errors.weight} </p>
+                        }
+
+                        <label> Image: </label>
+                        <input type='text' value={input.image} name='image' placeholder="Image URL..." onChange={handleChange} />
+
+
+                        <label> Temperaments: </label>
+
+                        <select className="select_create" onChange={(e) => handleSelect(e)}>
+                            <option disabled selected defaultValue>Select Temperaments</option>
+                            {allTemperaments?.map((temp, key) => (
+                                <option key={key} value={temp.id} id={temp.name}> {temp.name} </option>
+                            ))}
+                        </select>
+
+                        <ul className="seleccion">{Array.from(temp.values()).map((t) => t + ' ,')}</ul>
+
+                        <button input='input' className='bottoncrear' type="submit"> Create Dog </button>
+
+                    </div>
+                </form>
             </div>
         </div>
     )

@@ -23,14 +23,13 @@ export default function NavBar() {
 
     return (
         <div className="navBar">
-
-            <a href='javascript:location.reload()' className="titulo_nav"> DOGS WEB </a>
+            <a href='javascript:location.reload()'> <img className='imagen_nav' src='https://i.ibb.co/Fh3wFkk/Component-1.png' alt="not found"/> </a>
 
             <SearchBar />
 
             <div className='temperament'>
 
-                <h3>Filter by temperament</h3>
+                <h3>Search by temperament</h3>
 
                 <select className='temperament_select' onChange={(e) => handleFilterTemperament(e)}>
                     <option disabled selected defaultValue>Select temperament</option>

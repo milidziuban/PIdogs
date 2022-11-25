@@ -15,8 +15,8 @@
 }
 
 .card:hover {
-    color:white;
-    background-color: #732B2B;
+    color:rgb(255, 255, 255);
+    background-color: #8B2974;
 }
 
 /* .nombres {

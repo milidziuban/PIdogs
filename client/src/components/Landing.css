@@ -1,47 +1,56 @@
 button {
     cursor: pointer;
-    
+
     position: relative;
     display: inline-block;
     border: none;
 
-    background: #732B2B;
+    background: #8B2974;
     color: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 4px;
 }
 
 .button_home {
-    margin: 0.5rem 1rem;
+    margin-top: 290px;
     width: 278px;
     height: 48px;
     font-size: 18px;
 }
 
 .button_home:hover {
-    color: #732B2B;
+    color: #8B2974;
     background: #ffffff;
     font-size: 18px;
 }
 
 .style_landing {
-    color: #ffffff;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(https://img.freepik.com/foto-gratis/adorable-perro-basenji-marron-blanco-sonriendo-dando-maximo-cinco-aislado-blanco_346278-1657.jpg?w=2000);
+    background: url('../Desktop4.png');
+    color: #000000;
+
     background-position: center;
+    background-repeat: no-repeat;
+
     height: 100vh;
+
+    display: flex;
 }
 
-.titulo_landing {
-    color: white;
-    margin-top: 0;
-    line-height: 3;
+.texto_landing {
+    display: block;
+    width: 700px;
+}
+
+.imagen {
+    transform: matrix(-1, 0, 0, 1, 0, 0);   
 }
 
 .descrip_landing {
-    margin-block-end: 230px; 
+    margin-top: 30px;
 }
 
 .parrafo_landing {
     font-size: 18px;
-    padding-inline: 180px;
+    padding-inline: 130px;
+    margin-top: 30px;
 }

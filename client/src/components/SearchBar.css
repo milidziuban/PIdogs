@@ -24,11 +24,11 @@
     font-weight: 500;
     font-size: 14px;
 
-    color: #732B2B;
-    background: #ffffff;
+    color: white;
+    background: #8B2974;
 }
 
 .button_search:hover {
-    background-color: #732B2B;
-    color: #ffffff;
+    color: #8B2974;
+    background-color: white;
 }

@@ -42,6 +42,8 @@ export default function Home() {
         dispatch(actions.getTemperament());
     }, [dispatch])
 
+    console.log(currentDog)
+
     return (
         <div id='home' name='home' className="home">
 
@@ -67,8 +69,9 @@ export default function Home() {
                     paginado={paginado} />
             </div>
 
+
             <div className="contenido_home">
-                {currentDog?.map(el => {
+                {currentDog && Array.isArray(currentDog) && currentDog.length !== 0 ? currentDog.map(el => {
                     return (
                         <div className="cards">
                             <Link to={'/home/' + el.id}>
@@ -76,11 +79,13 @@ export default function Home() {
                             </Link>
                         </div>
                     )
-
                 })
-                }
+                : null
+            }
             </div>
 
+            {typeof allDogs === 'string' ? <h3>{allDogs}</h3> : null}
+            
         </div>
     )
 

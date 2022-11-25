@@ -11,11 +11,12 @@
 }
 
 .botonpaginado {
+    border-radius: 139px;
     width: 40px;
     height: 22px;
 }
 
 .botonpaginado:hover{
-    color: #732B2B;
+    color: #8B2974;
     background: #ffffff;
 }

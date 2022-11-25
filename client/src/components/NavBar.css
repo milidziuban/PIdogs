@@ -1,7 +1,9 @@
 .navBar {
-    background-color: #732B2B;
-    color: white;
-    padding: 30px;
+    background-color: #D9D9D9;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: rgb(0, 0, 0);
+    position: relative;
+    padding: 14px;
     display: flex;
     align-items: center;
 }
@@ -10,19 +12,14 @@
     margin: auto;
 }
 
-.titulo_nav {
-    text-decoration: none;
-    color: white;
-    font-weight: 600;
-    font-size: xx-large;
-    margin-inline-start: 30px;
-    margin-inline-end: 280px;
+.imagen_nav {
+    width: 200px;
+    margin-right: 350px
 }
 
 .temperament {
-    width: 230px;
+    width: 250px;
     display: inline;
-
 }
 
 .temperament_select {
@@ -30,23 +27,24 @@
 }
 
 .create_link {
-    width: 133px;
+    width: 140px;
     height: 39px;
-    margin-left: 108px;
+    margin-left: 75px;
+    
     font-size: large;
     font-weight: 500;
     text-decoration: none;
-    color: #732B2B;
+    color: white;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background-color: white;
+    background-color: #8B2974;
     border-radius: 4px;
 }
 
 .create_link:hover {
-    background-color: #8d1f1f;
-    color: white
+    color: #8B2974;
+    background-color: white;
 }
