@@ -21,7 +21,6 @@ router.get('/', (req, res) => {
                 }
                 let promedio = total / peso.length
 
-                console.log(promedio, typeof promedio);
                 if (isNaN(promedio)) {
                     promedio = 8
                 }
@@ -51,7 +50,6 @@ router.get('/', (req, res) => {
                         const temp = dog.temperaments.map(el => {
                             return el.name
                         }).join(', ');
-                        console.log(temp);
                         return {
                             id: dog.id,
                             image: dog.image,
