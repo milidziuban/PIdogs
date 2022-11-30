@@ -37,7 +37,7 @@ export default function Detail() {
                             <div className="details_img">
                                 <img src={details[0].image ? details[0].image : imagedefault} alt='img not found' width="320px" ></img>
                             </div>
-                        </div> : <p> loading... </p>
+                        </div> : <img src="https://cdn.dribbble.com/users/1782673/screenshots/4683964/ezgif.com-video-to-gif__2_.gif" width='550px'/> 
                 }
 
             </div>

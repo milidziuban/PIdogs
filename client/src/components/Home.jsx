@@ -63,12 +63,6 @@ export default function Home() {
 
             </div>
 
-            <div>
-                <Paginado dogPerPage={dogPerPage}
-                    allDogs={allDogs.length}
-                    paginado={paginado} />
-            </div>
-
 
             <div className="contenido_home">
                 {currentDog && Array.isArray(currentDog) && currentDog.length !== 0 ? currentDog.map(el => {
@@ -85,6 +79,13 @@ export default function Home() {
             </div>
 
             {typeof allDogs === 'string' ? <h3>{allDogs}</h3> : null}
+
+            <div>
+                <Paginado dogPerPage={dogPerPage}
+                    allDogs={allDogs.length}
+                    paginado={paginado} />
+            </div>
+
             
         </div>
     )

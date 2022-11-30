@@ -45,14 +45,18 @@
 }
 
 .bottoncrear:hover {
-    color: #732B2B;
+    color: #8B2974;
     background: #ffffff;
 }
 
-.seleccion{
+.seleccion {
     margin-top: 2%;
-    border-color: #732B2B;
-    background-color: #732B2B;
+    border-color: #EFBB95;
+    background-color: #EFBB95;
+
+    padding: 5px;
+    border-radius: 4px;
+    font-size: smaller;
 }
 
 .top {
@@ -82,15 +86,43 @@ input {
     border-radius: 3px;
     border: 0.2px;
     border-style: solid;
-    height: 15px
+    height: 15px;
+
+    border-color: #8B2974;
+    border-radius: 4px;
+}
+
+input:focus {
+    box-shadow: 0 0 1px 3px #EFBB95;
+    background-color: rgb(245, 245, 245);
+    outline: none;
 }
 
 select {
     width: 175px;
-    height: 22px
+    height: 22px;
+
+    border-color: #8B2974;
+    border-radius: 4px;
+    background: linear-gradient(to left, #f7f7f7, #ffffff);
+    box-shadow: 0 1px 0 1px rgba(0, 0, 0, .03);
+
 }
 
-.error{
+select:focus {
+    box-shadow: 0 0 1px 3px #EFBB95;
+    outline: none;
+}
+
+select:hover {
+    border-color: #888;
+}
+
+option {
+    background-color: rgb(245, 245, 245);
+}
+
+.error {
     display: contents;
     font-size: small;
     color: red;

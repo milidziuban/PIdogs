@@ -34,7 +34,6 @@ export default function CreaDog() {
 
     // const [temp, setTemp] = useState([])
     const [temp, setTemp] = useState(new Set())
-    const [button, setButton] = useState(false);
     const [errors, setErrors] = useState({})
 
     const [input, setInput] = useState({
@@ -72,19 +71,15 @@ export default function CreaDog() {
             ...input,
             temperament: [...input.temperament, e.target.value]
         });
-        // setTemp([
-        //     ...temp, e.target[e.target.selectedIndex].id
-        // ]);
         setTemp(temp.add(e.target[e.target.selectedIndex].id));
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('entro al handle');
         if (Object.keys(errors).length === 0) {
             console.log('entro al handle 1');
             console.log(Object.values(input))
-            // dispatch(postDog(input))
+            dispatch(postDog(input))
             alert('Dog creado')
             setInput({
                 name: "",
@@ -150,7 +145,8 @@ export default function CreaDog() {
                             ))}
                         </select>
 
-                        <ul className="seleccion">{Array.from(temp.values()).map((t) => t + ' ,')}</ul>
+                        {temp.size > 0 ? <span className="seleccion">{Array.from(temp.values()).map((t) => t + ', ')}</span>
+                            : null}
 
                         <button input='input' className='bottoncrear' type="submit"> Create Dog </button>
 
